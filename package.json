@@ -8,11 +8,30 @@
     "build:win": "electron-builder --win",
     "build:mac": "electron-builder --mac"
   },
-  "devDependencies": {
-    "electron": "^11.5.0",
-    "electron-builder": "^23.6.0"
+  "build": {
+    "appId": "com.mundijuegos.madre",
+    "productName": "Mundijuegos",
+    "directories": {
+      "output": "dist"
+    },
+    "extraResources": [
+      {
+        "from": "plugins",
+        "to": "plugins",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
+    "win": {
+      "target": "nsis"
+    },
+    "mac": {
+      "target": "dmg"
+    }
   },
-  "allowScripts": {
-    "electron@11.5.0": true
+  "devDependencies": {
+    "electron": "11.5.0",
+    "electron-builder": "^23.6.0"
   }
 }

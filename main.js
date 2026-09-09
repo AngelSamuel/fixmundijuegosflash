@@ -1,20 +1,24 @@
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
 const os = require('os');
-
 let pluginName;
 const platform = os.platform();
-
 if (platform === 'win32') {
   pluginName = 'pepflashplayer.dll'; // Plugin para Windows
 } else if (platform === 'darwin') {
   pluginName = 'PepperFlashPlayer.plugin'; // Plugin para Mac
 }
 
+// Determinar ruta según si está empaquetado (.exe/.dmg) o en desarrollo
+let flashPath;
+if (app.isPackaged) {
+  flashPath = path.join(process.resourcesPath, 'plugins', pluginName);
+} else {
+  flashPath = path.join(__dirname, 'plugins', pluginName);
+}
+
 // Apuntamos Electron al plugin de Flash
-const flashPath = path.join(__dirname, 'plugins', pluginName);
 app.commandLine.appendSwitch('ppapi-flash-path', flashPath);
-// app.commandLine.appendSwitch('ppapi-flash-version', '32.0.0.371'); // Versión compatible
 
 function createWindow () {
   const win = new BrowserWindow({
