@@ -20,8 +20,9 @@ if (app.isPackaged) {
 // Apuntamos Electron al plugin de Flash
 app.commandLine.appendSwitch('ppapi-flash-path', flashPath);
 
-// Simular que somos un Chrome moderno de escritorio normal (camuflar a Electron para evitar error 403)
-app.userAgentFallback = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
+// User-agent moderno y común
+const userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
+app.userAgentFallback = userAgent;
 
 function createWindow () {
   const win = new BrowserWindow({
@@ -29,12 +30,24 @@ function createWindow () {
     height: 800,
     title: "Mundijuegos",
     webPreferences: {
-      plugins: true // Habilita Flash
+      plugins: true, // Habilita Flash
+      nodeIntegration: false,
+      contextIsolation: true
     }
   });
   
+  win.webContents.session.webRequest.onBeforeSendHeaders((details, callback) => {
+    details.requestHeaders['User-Agent'] = userAgent;
+    details.requestHeaders['Accept-Language'] = 'es-ES,es;q=0.9,en;q=0.8';
+    callback({ cancel: false, requestHeaders: details.requestHeaders });
+  });
+
   win.maximize();
-  win.loadURL('https://www.mundijuegos.com/');
+  
+  // Borrar caché antes de cargar por si se quedó pillado el 403
+  win.webContents.session.clearCache().then(() => {
+    win.loadURL('https://www.mundijuegos.com/', { userAgent });
+  });
 }
 
 app.whenReady().then(createWindow);
