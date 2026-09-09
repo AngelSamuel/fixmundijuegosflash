@@ -1,10 +1,8 @@
 const cp = require('child_process');
-const path = require('path');
+const electron = require('electron'); // Resuelve automáticamente la ruta al ejecutable en cualquier SO
 
-const electronPath = path.join(__dirname, 'node_modules', 'electron', 'dist', 'Electron.app', 'Contents', 'MacOS', 'Electron');
-
-const app = cp.spawn(electronPath, ['.'], {
-  stdio: 'inherit' // Intenta con logs
+const app = cp.spawn(electron, ['.'], {
+  stdio: 'inherit' 
 });
 
 app.on('error', (err) => {
