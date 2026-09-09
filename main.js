@@ -20,6 +20,9 @@ if (app.isPackaged) {
 // Apuntamos Electron al plugin de Flash
 app.commandLine.appendSwitch('ppapi-flash-path', flashPath);
 
+// Simular que somos un Chrome moderno de escritorio normal (camuflar a Electron para evitar error 403)
+app.userAgentFallback = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
+
 function createWindow () {
   const win = new BrowserWindow({
     width: 1200,
