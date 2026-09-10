@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Navegador Madre</title>
+  <style>
+    body { margin: 0; padding: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #e0e0e0; }
+    #toolbar { display: flex; padding: 8px; background: #f3f3f3; border-bottom: 1px solid #ccc; align-items: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    #toolbar button { padding: 6px 12px; margin-right: 5px; cursor: pointer; border: 1px solid #ccc; background: #fff; border-radius: 4px; font-size: 14px; }
+    #toolbar button:hover { background: #e9e9e9; }
+    #urlbar { flex: 1; padding: 7px 10px; margin: 0 8px; font-size: 14px; border: 1px solid #ccc; border-radius: 15px; outline: none; }
+    #urlbar:focus { border-color: #0078d7; box-shadow: 0 0 3px rgba(0,120,215,0.5); }
+    webview { flex: 1; border: none; background: #fff; }
+  </style>
+</head>
+<body>
+  <div id="toolbar">
+    <button id="back" title="Atrás">⬅️</button>
+    <button id="forward" title="Adelante">➡️</button>
+    <button id="reload" title="Recargar">🔄</button>
+    <input type="text" id="urlbar" value="https://www.mundijuegos.com/" placeholder="Escribe aquí la dirección o web...">
+    <button id="go">Ir</button>
+  </div>
+  
+  <webview id="view" src="https://www.mundijuegos.com/" plugins></webview>
+
+  <script>
+    const webview = document.getElementById('view');
+    const urlbar = document.getElementById('urlbar');
+
+    document.getElementById('back').onclick = () => webview.goBack();
+    document.getElementById('forward').onclick = () => webview.goForward();
+    document.getElementById('reload').onclick = () => webview.reload();
+    
+    const loadUrl = () => {
+      let url = urlbar.value.trim();
+      if (!url) return;
+      if (!url.startsWith('http://') && !url.startsWith('https://')) {
+        url = 'https://' + url;
+      }
+      webview.loadURL(url);
+    };
+
+    document.getElementById('go').onclick = loadUrl;
+    urlbar.addEventListener('keyup', (e) => {
+      if (e.key === 'Enter') loadUrl();
+    });
+
+    webview.addEventListener('did-navigate', (e) => {
+      if (e.url !== urlbar.value) {
+        urlbar.value = e.url;
+      }
+    });
+
+    webview.addEventListener('did-navigate-in-page', (e) => {
+      if (e.url !== urlbar.value) {
+        urlbar.value = e.url;
+      }
+    });
+  </script>
+</body>
+</html>
