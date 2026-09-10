@@ -8,6 +8,8 @@ let flashPath = app.isPackaged ? path.join(process.resourcesPath, 'plugins', plu
 app.commandLine.appendSwitch('ppapi-flash-path', flashPath);
 app.commandLine.appendSwitch('ppapi-flash-version', '32.0.0.465'); 
 app.commandLine.appendSwitch('disable-features', 'EnableEphemerealFlashPermission');
+app.commandLine.appendSwitch('no-sandbox'); // Desactiva el aislamiento que bloquea DLLs externas sin firmar
+
 
 const userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
 app.userAgentFallback = userAgent;
