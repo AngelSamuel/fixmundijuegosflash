@@ -6,9 +6,9 @@ let pluginName = os.platform() === 'win32' ? 'pepflashplayer.dll' : 'PepperFlash
 let flashPath = app.isPackaged ? path.join(process.resourcesPath, 'plugins', pluginName) : path.join(__dirname, 'plugins', pluginName);
 
 app.commandLine.appendSwitch('ppapi-flash-path', flashPath);
-app.commandLine.appendSwitch('ppapi-flash-version', '32.0.0.465'); 
+app.commandLine.appendSwitch('ppapi-flash-version', '14.0.0.177'); 
 app.commandLine.appendSwitch('disable-features', 'EnableEphemerealFlashPermission');
-app.commandLine.appendSwitch('no-sandbox'); // Desactiva el aislamiento que bloquea DLLs externas sin firmar
+app.commandLine.appendSwitch('no-sandbox');
 
 
 const userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
